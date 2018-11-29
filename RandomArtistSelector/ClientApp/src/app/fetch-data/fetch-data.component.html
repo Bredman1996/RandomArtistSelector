@@ -1,24 +1,21 @@
-<h1>Weather forecast</h1>
+<h1>Artist Selector</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p *ngIf="!genres"><em>Loading...</em></p>
 
-<p *ngIf="!forecasts"><em>Loading...</em></p>
+<select [(ngModel)]="genreName">
+  <option *ngFor="let genre of genres" value="{{genre.name}}">{{genre.name}}</option>
+</select>
 
-<table class='table' *ngIf="forecasts">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Temp. (C)</th>
-      <th>Temp. (F)</th>
-      <th>Summary</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let forecast of forecasts">
-      <td>{{ forecast.dateFormatted }}</td>
-      <td>{{ forecast.temperatureC }}</td>
-      <td>{{ forecast.temperatureF }}</td>
-      <td>{{ forecast.summary }}</td>
-    </tr>
-  </tbody>
-</table>
+  <div *ngFor="let genre of genres">
+    <div *ngIf="genreName == genre.name">
+      <select [(ngModel)]="subGenreName">
+        <option *ngFor="let subGenre of genre.subGenres" value="{{subGenre.name}}">{{subGenre.name}}</option>
+      </select>
+      <div *ngFor="let subGenre of genre.subGenres">
+        <div *ngIf="subGenreName == subGenre.name">
+          <button (click)="getRandom(subGenre.artists)">Get Random Band</button>
+          <p id="RandomBand"></p>
+        </div>
+      </div>
+    </div>
+  </div>

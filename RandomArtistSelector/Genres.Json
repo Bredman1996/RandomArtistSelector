@@ -1,0 +1,60 @@
+{
+   "genres": [
+        {
+            "name":"Metal",
+            "subGenres":[
+                {
+                    "name":"Brutal Slamming Death Metal",
+                    "artists":[
+                        {
+                            "name":"Within Destruction"
+                        },
+                        {
+                            "name":"Aborted"
+                        },
+                        {
+                            "name":"Cattle Decapitation"
+                        },
+                        {
+                            "name":"Viraemia"
+                        },
+                        {
+                            "name":"Slaughterbox"
+                        },
+                        {
+                            "name":"Gorerotted"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name":"Rock",
+            "subGenres":[
+                {
+                    "name":"80s",
+                    "artists":[
+                        {
+                            "name":"Queen"
+                        },
+                        {
+                            "name":"Bon Jovi"
+                        },
+                        {
+                            "name":"Guns N' Roses"
+                        },
+                        {
+                            "name":"Warrant"
+                        },
+                        {
+                            "name":"Aerosmith"
+                        },
+                        {
+                            "name":"Bob Seger"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

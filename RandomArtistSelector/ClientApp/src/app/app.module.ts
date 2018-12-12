@@ -5,15 +5,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-//import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { SpotifyComponent } from './spotify/spotify-login.component';
+import { SpotifyService } from './services/spotify-controller';
 
 @NgModule({
   declarations: [
     AppComponent,
-    //NavMenuComponent,
-
-    FetchDataComponent
+    NavMenuComponent,
+    FetchDataComponent,
+    SpotifyComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -21,9 +23,10 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: FetchDataComponent },
+      { path: 'spotify', component: SpotifyComponent }
     ])
   ],
-  providers: [],
+  providers: [SpotifyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

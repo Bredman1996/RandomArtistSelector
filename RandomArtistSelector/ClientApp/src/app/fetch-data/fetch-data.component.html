@@ -1,10 +1,10 @@
 <h1>Artist Selector</h1>
 
 <p *ngIf="!genres"><em>Loading...</em></p>
-
-<select [(ngModel)]="genreName">
-  <option *ngFor="let genre of genres" value="{{genre.name}}">{{genre.name}}</option>
-</select>
+<div *ngIf="genres">
+  <select [(ngModel)]="genreName">
+    <option *ngFor="let genre of genres" value="{{genre.name}}">{{genre.name}}</option>
+  </select>
 
   <div *ngFor="let genre of genres">
     <div *ngIf="genreName == genre.name">
@@ -19,3 +19,4 @@
       </div>
     </div>
   </div>
+</div>

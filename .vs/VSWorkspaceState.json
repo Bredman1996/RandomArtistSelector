@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\RandomArtistSelector",
+    "\\RandomArtistSelector\\ClientApp",
+    "\\RandomArtistSelector\\ClientApp\\src",
+    "\\RandomArtistSelector\\ClientApp\\src\\app",
+    "\\RandomArtistSelector\\ClientApp\\src\\app\\fetch-data"
+  ],
+  "SelectedNode": "\\RandomArtistSelector\\ClientApp\\src\\app\\fetch-data\\fetch-data.component.html",
+  "PreviewInSolutionExplorer": false
+}

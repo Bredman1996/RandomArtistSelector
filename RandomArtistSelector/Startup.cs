@@ -21,7 +21,7 @@ namespace RandomArtistSelector
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddCors();
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -45,6 +45,12 @@ namespace RandomArtistSelector
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseCors(builder =>
+            {
+
+                builder.WithOrigins("https://accounts.spotify.com","https://spotify.com", "https://localhost").AllowAnyHeader();
+            });
 
             app.UseMvc(routes =>
             {

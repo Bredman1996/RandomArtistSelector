@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { SpotifyComponent } from './spotify/spotify-login.component';
+import { SpotifyLoginComponent } from './spotify/spotify-login.component';
 import { SpotifyService } from './services/spotify-controller';
 
 @NgModule({
@@ -15,7 +15,7 @@ import { SpotifyService } from './services/spotify-controller';
     AppComponent,
     NavMenuComponent,
     FetchDataComponent,
-    SpotifyComponent
+    SpotifyLoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -23,7 +23,7 @@ import { SpotifyService } from './services/spotify-controller';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: FetchDataComponent },
-      { path: 'spotify', component: SpotifyComponent }
+      { path: 'spotify', component: SpotifyLoginComponent }
     ])
   ],
   providers: [SpotifyService],

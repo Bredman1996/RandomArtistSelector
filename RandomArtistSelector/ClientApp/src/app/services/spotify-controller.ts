@@ -18,4 +18,9 @@ export class SpotifyService {
     return this.http.get(url + "?authToken=" + authToken);
   }
 
+  getUsersPlaylists(url: string, authToken: string) {
+
+  }
+
 }
+

@@ -1,8 +1,8 @@
 <h1>HEY</h1>
-<div *ngIf="!request.code">
+<div *ngIf="!model.request.code">
   <a href="https://accounts.spotify.com/authorize?client_id=71562cadc5b6485c8688378f5979bf5b&response_type=code&redirect_uri=https://localhost:44315/spotify">Log in to Spotify</a>
 </div>
-<div *ngIf="request.code">
-  <button (click)="getUserInfo(accessToken)">GetUserInfo</button>
-  <p>{{userId}}</p>
+<div *ngIf="model.request.code">
+  <button (click)="getUsersPlaylists(model.url)">GetPlaylists</button>
+  <p>{{playlists}}</p>
 </div>

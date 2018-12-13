@@ -4,6 +4,7 @@ import { Component, Inject } from '@angular/core';
 import { SpotifyService } from '../services/spotify-controller'
 import { ActivatedRoute } from '@angular/router';
 import { AccessTokenRequest } from '../Models/AccessTokenRequest'
+import { SpotifyUser } from '../Models/SpotifyUser';
 
 @Component({
   selector: 'spotify',
@@ -11,36 +12,32 @@ import { AccessTokenRequest } from '../Models/AccessTokenRequest'
 })
 
 export class SpotifyLoginComponent {
-  public accessToken: any
-  public userId: any
-  request: AccessTokenRequest = {
-    grant_type: "authorization_code",
-    redirect_uri: "https://localhost:44315/spotify",
-    code: "",
-    client_id: "71562cadc5b6485c8688378f5979bf5b",
-    client_secret: "14e2707243e44d8e8eb6b93c985c5ab9"
-}
+  model: SpotifyUser = {
+    userId: "",
+    request: new AccessTokenRequest("authorization_code", "", "https://localhost:44315/spotify", "71562cadc5b6485c8688378f5979bf5b", "14e2707243e44d8e8eb6b93c985c5ab9"),
+    url:""
+  }
+  playlists: string[]
 
   constructor(private spotifyService: SpotifyService, private route: ActivatedRoute, @Inject('BASE_URL') baseUrl: string) {
     this.route.queryParams.subscribe(params => {
-      this.request.code = params['code'];
+      this.model.request.code = params['code'];
     });
     if (this.isTokenPresent()) {
-      spotifyService.getAccessToken(baseUrl + "api/spotify/GetAuthToken", this.request).subscribe(result => {
-        this.accessToken = result;
+      spotifyService.getAccessToken(baseUrl + "api/spotify/GetUserInfo", this.model.request).subscribe(result => {
+        this.model.userId = result["id"];
+        this.model.url = result["href"];
       });
     }
+    console.log(this.model)
   }
 
-  getUserInfo(accessToken: string) {
-    console.log(accessToken)
-    this.spotifyService.getUserInfo("https://localhost:44315/api/spotify/GetUserId", accessToken).subscribe(result => {
-      this.userId = result;
-    });
+  getUsersPlaylists(url: any) {
+    this.spotifyService.getUsersPlaylists(url, this.)
   }
 
   isTokenPresent() {
-    if (this.request.code === undefined) {
+    if (this.model.request.code === undefined) {
       return false;
     } else {
       return true;

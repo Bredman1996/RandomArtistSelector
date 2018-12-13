@@ -23,24 +23,51 @@ namespace RandomArtistSelector.Controllers
             string body = $"client_id={request.client_id}&client_secret={request.client_secret}&code={request.code}&grant_type={request.grant_type}&redirect_uri={request.redirect_uri}";
             AuthTokenResponse authInfo = JsonConvert.DeserializeObject<AuthTokenResponse>(web.UploadString(" https://accounts.spotify.com/api/token", body));
             string authToken = authInfo.access_token;
-            string userInfo = this.GetUserId(authToken);
-            return userInfo;
+            SpotifyUserInfo userInfo = JsonConvert.DeserializeObject<SpotifyUserInfo>(GetUserId(authToken));
+            userInfo.authToken = authToken;
+            return JsonConvert.SerializeObject(userInfo);
         }
+
         public string GetUserId(string authToken)
         {
             var web = new WebClient();
             web.Headers.Set("Authorization", $"Bearer {authToken}");
-            var response = web.DownloadString("https://api.spotify.com/v1/me");
+            string response = web.DownloadString("https://api.spotify.com/v1/me");
             return response;
         }
 
         [HttpPost("[action]")]
-        public string[] GetUsersPlaylists([FromBody] string url, string authToken)
+        public string GetUsersPlaylists([FromBody] PlaylistRequest request)
         {
+            List<Playlist> playlists = new List<Playlist>();
+            int offset = 0;
             WebClient web = new WebClient();
-            web.Headers.Set("Authorization", $"Bearer {authToken}");
-            JObject playlists = (JObject)web.DownloadString(url+ "/playlists?offset=0&limit=50");
-            return null;
+            web.Headers.Set("Authorization", $"Bearer {request.accessToken}");
+            bool looper = true;
+            while (looper) {
+            JObject response = JObject.Parse(web.DownloadString(request.userUrl+ $"/playlists?offset={offset}&limit=50"));
+            JArray items = response["items"].ToObject<JArray>();
+                foreach (JObject item in items)
+                {
+                    Playlist playlist = new Playlist
+                    {
+                        name = item["name"].ToString(),
+                        href = item["href"].ToString(),
+                    };
+                    playlists.Add(playlist);
+                }
+                int count = items.Count;
+                if (count == 50)
+                {
+                    offset += 50;
+                }
+                else
+                {
+                    looper = false;
+                }
+            }
+            string result = JsonConvert.SerializeObject(playlists);
+            return result;
         }
     }
 }

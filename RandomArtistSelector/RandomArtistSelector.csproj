@@ -27,14 +27,14 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\file.ts" />
-    <None Remove="ClientApp\src\app\Models\SpotifyUser.ts" />
+    <None Remove="ClientApp\src\app\Models\PlaylistRequest.ts" />
     <None Remove="ClientApp\src\app\services\spotify-controller.ts" />
     <None Remove="ClientApp\src\app\spotify\spotify-login.component.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\Models\AccessTokenRequest.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\Models\SpotifyUser.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\Models\PlaylistRequest.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\spotify-controller.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\spotify\spotify-login.component.ts" />
   </ItemGroup>

@@ -1,0 +1,57 @@
+.previousPage /deep/ .ngx-pagination .pagination-previous {
+  background: limegreen;
+  color: black;
+  border-radius: 12px;
+}
+.nextPage /deep/ .ngx-pagination .pagination-next {
+  background: limegreen;
+  color: black;
+  border-radius: 12px;
+}
+
+.page /deep/ .ngx-pagination .current {
+  background: limegreen;
+  color: black;
+  border-radius: 12px;
+}
+
+.unselectedPage /deep/ .ngx-pagination{
+  color:limegreen;
+}
+
+.pageHover /deep/ .ngx-pagination a:hover{
+  background: black;
+  color: limegreen;
+  border:none;
+  border-radius: 12px;
+}
+
+.pagePadding /deep/ .ngx-pagination{
+  padding:10px 10px 10px 10px;
+  align-self:center;
+}
+
+button {
+  background-color: limegreen;
+  border: none;
+  color: black;
+  border-radius: 12px;
+  font-size: 50px;
+  position: center;
+  outline:none !important;
+}
+
+.list {
+  min-height: 100%;
+}
+
+ul {
+  list-style-type: none;
+  align-content: center;
+  cursor: default !important;
+  min-width: 500px;
+  /*border: 5px solid limegreen;*/
+}
+li{
+  cursor:default !important;
+}

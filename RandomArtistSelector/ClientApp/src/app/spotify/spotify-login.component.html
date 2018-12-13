@@ -1,8 +1,18 @@
-<h1>HEY</h1>
-<div *ngIf="!model.request.code">
-  <a href="https://accounts.spotify.com/authorize?client_id=71562cadc5b6485c8688378f5979bf5b&response_type=code&redirect_uri=https://localhost:44315/spotify">Log in to Spotify</a>
-</div>
-<div *ngIf="model.request.code">
-  <button (click)="getUsersPlaylists(model.url)">GetPlaylists</button>
-  <p>{{playlists}}</p>
+<div class="wrapper list">
+  <div *ngIf="!request.code">
+    <h1>First you'll need to authorize me to get your account info</h1>
+    <a href="https://accounts.spotify.com/authorize?client_id=71562cadc5b6485c8688378f5979bf5b&response_type=code&redirect_uri=https://localhost:44315/spotify">
+      <button class="">Log in to Spotify</button>
+    </a>
+  </div>
+  <div *ngIf="request.code && !playlists">
+    <button (click)="getUsersPlaylists()">Get Playlists</button>
+  </div>
+  <div class="list" *ngIf="playlists">
+    <h1>You have {{playlists.length}} playlists</h1>
+    <ul>
+      <li id ="paginating" *ngFor="let playlist of playlists | paginate: { itemsPerPage: 10, currentPage: p }">{{playlist.name}}</li>
+    </ul>
+    <pagination-controls class="previousPage nextPage page pageHover unselectedPage pagePadding" (pageChange)="p = $event"></pagination-controls>
+  </div>
 </div>

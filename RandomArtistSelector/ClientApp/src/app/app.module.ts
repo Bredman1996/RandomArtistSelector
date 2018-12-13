@@ -9,6 +9,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { SpotifyLoginComponent } from './spotify/spotify-login.component';
 import { SpotifyService } from './services/spotify-controller';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { SpotifyService } from './services/spotify-controller';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    NgxPaginationModule,
     RouterModule.forRoot([
       { path: '', component: FetchDataComponent },
       { path: 'spotify', component: SpotifyLoginComponent }

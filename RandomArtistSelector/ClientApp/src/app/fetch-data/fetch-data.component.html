@@ -1,20 +1,21 @@
-<h1>Artist Selector</h1>
+<div class="wrapper">
+  <h1>Artist Selector</h1>
+  <p *ngIf="!genres"><em>Loading...</em></p>
+  <div *ngIf="genres">
+    <select [(ngModel)]="genreName">
+      <option *ngFor="let genre of genres" value="{{genre.name}}">{{genre.name}}</option>
+    </select>
 
-<p *ngIf="!genres"><em>Loading...</em></p>
-<div *ngIf="genres">
-  <select [(ngModel)]="genreName">
-    <option *ngFor="let genre of genres" value="{{genre.name}}">{{genre.name}}</option>
-  </select>
-
-  <div *ngFor="let genre of genres">
-    <div *ngIf="genreName == genre.name">
-      <select [(ngModel)]="subGenreName">
-        <option *ngFor="let subGenre of genre.subGenres" value="{{subGenre.name}}">{{subGenre.name}}</option>
-      </select>
-      <div *ngFor="let subGenre of genre.subGenres">
-        <div *ngIf="subGenreName == subGenre.name">
-          <button (click)="getRandom(subGenre.artists)">Get Random Band</button>
-          <p id="RandomBand"></p>
+    <div *ngFor="let genre of genres">
+      <div *ngIf="genreName == genre.name">
+        <select [(ngModel)]="subGenreName">
+          <option *ngFor="let subGenre of genre.subGenres" value="{{subGenre.name}}">{{subGenre.name}}</option>
+        </select>
+        <div *ngFor="let subGenre of genre.subGenres">
+          <div *ngIf="subGenreName == subGenre.name">
+            <button (click)="getRandom(subGenre.artists)">Get Random Band</button>
+            <p id="RandomBand"></p>
+          </div>
         </div>
       </div>
     </div>

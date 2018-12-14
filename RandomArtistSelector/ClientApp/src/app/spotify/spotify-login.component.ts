@@ -5,7 +5,8 @@ import { SpotifyService } from '../services/spotify-controller';
 import { ActivatedRoute } from '@angular/router';
 import { AccessTokenRequest } from '../Models/AccessTokenRequest';
 import { PlaylistRequest } from '../Models/PlaylistRequest';
-import * as math from 'mathjs';
+import { GetTracksRequest } from '../Models/GetTracksRequest';
+//import * as math from 'mathjs';
 
 
 @Component({
@@ -17,18 +18,22 @@ import * as math from 'mathjs';
 export class SpotifyLoginComponent {
   request = new AccessTokenRequest("authorization_code", "", "https://localhost:44315/spotify", "71562cadc5b6485c8688378f5979bf5b", "14e2707243e44d8e8eb6b93c985c5ab9");
   playlists: any;
+  selectedPlaylist: any;
+  tracks: any;
 
   constructor(private spotifyService: SpotifyService, private route: ActivatedRoute, @Inject('BASE_URL') baseUrl: string) {
     this.route.queryParams.subscribe(params => {
       this.request.code = params['code'];
     });
-    if (this.isTokenPresent()) {
-      spotifyService.getAccessToken(baseUrl + "api/spotify/GetUserInfo", this.request).subscribe(result => {
-        sessionStorage.setItem('url', result["href"]);
-        sessionStorage.setItem('accessToken', result["authToken"]);
-        console.log(result);
-      });
-      console.log(this);
+    if (!this.isAccessTokenInSession()) {
+      if (this.isTokenPresent()) {
+        spotifyService.getAccessToken(baseUrl + "api/spotify/GetUserInfo", this.request).subscribe(result => {
+          sessionStorage.setItem('url', result["href"]);
+          sessionStorage.setItem('accessToken', result["authToken"]);
+          console.log(result);
+        });
+        console.log(this);
+      }
     }
   }
 
@@ -39,16 +44,15 @@ export class SpotifyLoginComponent {
     });
   }
 
-  getPageSize(number: any) {
-    for (let i = 10; i < number; i++)
-      if (math.mod(number, i) === 0) {
-        console.log(i);
-        return (math.mod(number, i));
-      } 
-  }
-
-  setPageSize(number: any) {
-    document.getElementById("paginating").setAttribute("paginate.itemsPerPage", this.getPageSize(number));
+  getRandomPlaylist() {
+    var ranNum = Math.floor(Math.random() * this.playlists.length);
+    this.selectedPlaylist = this.playlists[ranNum];
+    let request = new GetTracksRequest();
+    request.playlistName = this.selectedPlaylist.name;
+    request.playlistUrl = this.selectedPlaylist.url;
+    this.spotifyService.getTracks("api/spotify/GetTracks", request).subscribe(result => {
+      this.tracks = result;
+    });
   }
 
   isTokenPresent() {
@@ -56,6 +60,14 @@ export class SpotifyLoginComponent {
       return false;
     } else {
       return true;
+    }
+  }
+
+  isAccessTokenInSession() {
+    if (sessionStorage.accessToken) {
+      return true;
+    } else {
+      return false;
     }
   }
 

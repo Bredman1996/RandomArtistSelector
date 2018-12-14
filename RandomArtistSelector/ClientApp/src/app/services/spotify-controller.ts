@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AccessTokenRequest } from '../Models/AccessTokenRequest'
 import { PlaylistRequest } from '../Models/PlaylistRequest';
+import { GetTracksRequest } from '../Models/GetTracksRequest';
 
 @Injectable()
 export class SpotifyService {
@@ -22,5 +23,8 @@ export class SpotifyService {
     return this.http.post(url, request);
   }
 
+  getTracks(url: string, request: GetTracksRequest) {
+
+  }
 }
 

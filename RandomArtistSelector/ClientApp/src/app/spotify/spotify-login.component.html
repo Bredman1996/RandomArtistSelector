@@ -1,18 +1,29 @@
-<div class="wrapper list">
-  <div *ngIf="!request.code">
+<div class="wrapper">
+  <div *ngIf="!isAccessTokenInSession()">
     <h1>First you'll need to authorize me to get your account info</h1>
     <a href="https://accounts.spotify.com/authorize?client_id=71562cadc5b6485c8688378f5979bf5b&response_type=code&redirect_uri=https://localhost:44315/spotify">
       <button class="">Log in to Spotify</button>
     </a>
   </div>
-  <div *ngIf="request.code && !playlists">
+  <div *ngIf="isAccessTokenInSession() && !playlists">
     <button (click)="getUsersPlaylists()">Get Playlists</button>
   </div>
-  <div class="list" *ngIf="playlists">
+  <div *ngIf="playlists">
     <h1>You have {{playlists.length}} playlists</h1>
     <ul>
       <li id ="paginating" *ngFor="let playlist of playlists | paginate: { itemsPerPage: 10, currentPage: p }">{{playlist.name}}</li>
     </ul>
-    <pagination-controls class="previousPage nextPage page pageHover unselectedPage pagePadding" (pageChange)="p = $event"></pagination-controls>
-  </div>
+    <pagination-controls class="paging" (pageChange)="p = $event"></pagination-controls>
+    <div>
+    <div>
+      <button (click)="getRandomPlaylist()" >Get Random Playlist</button>
+    </div>
+    <div>
+      <div *ngIf="selectedPlaylist">
+        <h2 class="playlistTitle">Your Random Playlist is:</h2>
+        <p>{{selectedPlaylist.name}}</p>
+      </div>
+    </div>
+    </div>
+    </div>
 </div>

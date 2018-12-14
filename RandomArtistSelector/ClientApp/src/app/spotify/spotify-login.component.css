@@ -1,34 +1,44 @@
-.previousPage /deep/ .ngx-pagination .pagination-previous {
+.paging /deep/ .ngx-pagination .pagination-previous {
   background: limegreen;
   color: black;
   border-radius: 12px;
 }
-.nextPage /deep/ .ngx-pagination .pagination-next {
-  background: limegreen;
-  color: black;
-  border-radius: 12px;
-}
-
-.page /deep/ .ngx-pagination .current {
+.paging /deep/ .ngx-pagination .pagination-next {
   background: limegreen;
   color: black;
   border-radius: 12px;
 }
 
-.unselectedPage /deep/ .ngx-pagination{
-  color:limegreen;
+.paging /deep/ .ngx-pagination .current {
+  background: black;
+  border: 2px solid limegreen;
+  color: black;
+  border-radius: 12px;
 }
 
-.pageHover /deep/ .ngx-pagination a:hover{
+.paging /deep/ .ngx-pagination span{
+  color: limegreen;
+}
+
+.paging /deep/ .ngx-pagination a:hover {
   background: black;
   color: limegreen;
-  border:none;
+  border: none;
   border-radius: 12px;
 }
 
-.pagePadding /deep/ .ngx-pagination{
-  padding:10px 10px 10px 10px;
-  align-self:center;
+.paging /deep/ .ngx-pagination .disabled {
+  background: black;
+  color: limegreen;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+}
+
+.paging /deep/ .ngx-pagination {
+  padding: 10px 10px 10px 10px;
+  align-self: center;
+  color: limegreen;
 }
 
 button {
@@ -36,13 +46,16 @@ button {
   border: none;
   color: black;
   border-radius: 12px;
-  font-size: 50px;
+  font-size: 25px;
   position: center;
   outline:none !important;
+  height:20%;
 }
 
 .list {
   min-height: 100%;
+  display: flex;
+  width: 100%;
 }
 
 ul {
@@ -54,4 +67,21 @@ ul {
 }
 li{
   cursor:default !important;
+}
+
+.left{
+  width: 10%;
+}
+
+.right{
+  width: 75%;
+}
+
+.column {
+  float: left;
+  padding-top: 40%;
+}
+
+.playlistTitle {
+  padding-top:0px;
 }

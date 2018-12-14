@@ -10,13 +10,15 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { SpotifyLoginComponent } from './spotify/spotify-login.component';
 import { SpotifyService } from './services/spotify-controller';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
     FetchDataComponent,
-    SpotifyLoginComponent
+    SpotifyLoginComponent,
+    PlaylistComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -25,7 +27,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     NgxPaginationModule,
     RouterModule.forRoot([
       { path: '', component: FetchDataComponent },
-      { path: 'spotify', component: SpotifyLoginComponent }
+      { path: 'spotify', component: SpotifyLoginComponent },
+      { path: 'playlist', component: PlaylistComponent }
     ])
   ],
   providers: [SpotifyService],

@@ -24,7 +24,7 @@ export class SpotifyService {
   }
 
   getTracks(url: string, request: GetTracksRequest) {
-
+    return this.http.post(url, request);
   }
 }
 

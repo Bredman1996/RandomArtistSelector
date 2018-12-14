@@ -1,29 +1,39 @@
+<div *ngIf="isPageInited">
 <div class="wrapper">
-  <div *ngIf="!isAccessTokenInSession()">
-    <h1>First you'll need to authorize me to get your account info</h1>
-    <a href="https://accounts.spotify.com/authorize?client_id=71562cadc5b6485c8688378f5979bf5b&response_type=code&redirect_uri=https://localhost:44315/spotify">
-      <button class="">Log in to Spotify</button>
-    </a>
-  </div>
-  <div *ngIf="isAccessTokenInSession() && !playlists">
-    <button (click)="getUsersPlaylists()">Get Playlists</button>
-  </div>
-  <div *ngIf="playlists">
-    <h1>You have {{playlists.length}} playlists</h1>
-    <ul>
-      <li id ="paginating" *ngFor="let playlist of playlists | paginate: { itemsPerPage: 10, currentPage: p }">{{playlist.name}}</li>
-    </ul>
-    <pagination-controls class="paging" (pageChange)="p = $event"></pagination-controls>
-    <div>
-    <div>
-      <button (click)="getRandomPlaylist()" >Get Random Playlist</button>
+    <div *ngIf="!isAccessTokenInSession()">
+      <h1>First you'll need to authorize me to get your account info</h1>
+      <a href="https://accounts.spotify.com/authorize?client_id=71562cadc5b6485c8688378f5979bf5b&response_type=code&redirect_uri=https://localhost:44315/spotify">
+        <button>Log in to Spotify</button>
+      </a>
     </div>
-    <div>
-      <div *ngIf="selectedPlaylist">
-        <h2 class="playlistTitle">Your Random Playlist is:</h2>
-        <p>{{selectedPlaylist.name}}</p>
+    <div *ngIf="isAccessTokenInSession() && !playlists">
+      <h2>Now I can get your playlists and then choose one at random for you. </h2>
+      <button (click)="getUsersPlaylists()">Get Playlists</button>
+    </div>
+    <div *ngIf="playlists">
+      <h1>You have {{playlists.length}} playlists</h1>
+      <ul>
+        <li id="paginating" *ngFor="let playlist of playlists | paginate: { itemsPerPage: 10, currentPage: p }">{{playlist.name}}</li>
+      </ul>
+      <pagination-controls class="paging" (pageChange)="p = $event"></pagination-controls>
+      <button (click)="getRandomPlaylist()">Get Random Playlist</button>
+    </div>
+  </div>
+  <div class="wrapper">
+    <div *ngIf="selectedPlaylist && isPageInited">
+      <h1 class="playlistTitle">Your Random Playlist is: <a href={{selectedPlaylist.spotifyUrl}} target="_blank">{{selectedPlaylist.name}}</a></h1>
+      <div *ngIf="tracks">
+        <h2>Here are the tracks of your playlist</h2>
+        <ul>
+          <li *ngFor="let track of tracks.Tracks">{{track.TrackName}} - By: {{track.ArtistName}}</li>
+        </ul>
+        <div *ngIf="tracks.previousUrl || tracks.nextUrl">
+          <div class="pagingControls">
+            <button class="pagers" [disabled]="!tracks.previousUrl" (click)="getPreviousTracks()">Get Previous Set of tracks</button>
+            <button class="pagers" [disabled]="!tracks.nextUrl" (click)="getNextTracks()">Get Next Set of tracks</button>
+          </div>
+        </div>
       </div>
     </div>
-    </div>
-    </div>
-</div>
+  </div>
+  </div>

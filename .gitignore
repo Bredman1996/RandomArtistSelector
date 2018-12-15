@@ -1,2 +1,6 @@
 .vs/*
 .vs/RandomArtistSelector/DesignTimeBuild/.dtbcache
+
+RandomArtistSelector/ClientApp/src/app/playlist/playlist\.component\.html
+
+RandomArtistSelector/ClientApp/src/app/playlist/playlist\.component\.ts

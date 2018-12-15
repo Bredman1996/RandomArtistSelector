@@ -26,5 +26,13 @@ export class SpotifyService {
   getTracks(url: string, request: GetTracksRequest) {
     return this.http.post(url, request);
   }
+
+  getCurrentlyPlaying(url: string, authToken: string) {
+    return this.http.get(url + "?authToken=" + authToken);
+  }
+
+  skipSong(url: string, authToken: string) {
+    return this.http.get(url + "?authToken=" + authToken);
+  }
 }
 

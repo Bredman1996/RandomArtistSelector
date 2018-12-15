@@ -92,5 +92,23 @@ namespace RandomArtistSelector.Controllers
             tracksResponse.Tracks = tracks;
             return JsonConvert.SerializeObject(tracksResponse);
         }
+
+        [HttpGet("[action]")]
+        public string GetCurrentlyPlaying([FromQuery] string authToken)
+        {
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {authToken}");
+            string response = web.DownloadString("https://api.spotify.com/v1/me/player/currently-playing");
+            return response;
+        }
+
+        [HttpGet("[action]")]
+        public string SkipSong([FromQuery] string authToken)
+        {
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {authToken}");
+            string response = web.UploadString("https://api.spotify.com/v1/me/player/next", "");
+            return response;
+        }
     }
 }

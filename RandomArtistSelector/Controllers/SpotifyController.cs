@@ -53,6 +53,7 @@ namespace RandomArtistSelector.Controllers
                     {
                         name = item["name"].ToString(),
                         href = item["href"].ToString(),
+                        spotifyUrl = item["external_urls"]["spotify"].ToString(),
                     };
                     playlists.Add(playlist);
                 }
@@ -68,6 +69,28 @@ namespace RandomArtistSelector.Controllers
             }
             string result = JsonConvert.SerializeObject(playlists);
             return result;
+        }
+
+        [HttpPost("[action]")]
+        public string GetTracks([FromBody] GetTracksRequest request)
+        {
+            TracksResponse tracksResponse= new TracksResponse();
+            List<Track> tracks = new List<Track>();
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {request.authToken}");
+            JObject spotifyResponse = JObject.Parse(web.DownloadString(request.playlistUrl));
+            JArray items = spotifyResponse["items"].ToObject<JArray>();
+            foreach(JObject item in items)
+            {
+                Track track = new Track();
+                track.TrackName = item["track"]["name"].ToString();
+                track.ArtistName = item["track"]["artists"][0]["name"].ToString();
+                tracks.Add(track);
+            }
+            tracksResponse.nextUrl = spotifyResponse["next"].ToString();
+            tracksResponse.previousUrl = spotifyResponse["previous"].ToString();
+            tracksResponse.Tracks = tracks;
+            return JsonConvert.SerializeObject(tracksResponse);
         }
     }
 }

@@ -1,11 +1,119 @@
 /* You can add global styles to this file, and also import other style files */
 body {
   background-color: black !important;
-  color: limegreen !important;
-  justify-content: center;
-  min-height: 100%;
+}
+
+h2 {
+  color: #1ED760 !important;
+}
+
+h1 {
+  color: #1ED760 !important;
+}
+
+p {
+  color: #1ED760 !important;
 }
 
 .wrapper {
-  justify-content: center !important;
+  display:flex;
+}
+
+.paging /deep/ .ngx-pagination .pagination-previous {
+  background: #1ED760;
+  color: black;
+  border-radius: 12px;
+}
+
+.paging /deep/ .ngx-pagination .pagination-next {
+  background: #1ED760;
+  color: black;
+  border-radius: 12px;
+}
+
+.paging /deep/ .ngx-pagination .current {
+  background: black;
+  border: 2px solid #1ED760;
+  color: black;
+  border-radius: 12px;
+}
+
+.paging /deep/ .ngx-pagination span {
+  color: #1ED760;
+}
+
+.paging /deep/ .ngx-pagination a:hover {
+  background: black;
+  color: #1ED760;
+  border: none;
+  border-radius: 12px;
+}
+
+.paging /deep/ .ngx-pagination .disabled {
+  background: black;
+  color: #1ED760;
+  border: none;
+  border-radius: 12px;
+  outline: none;
+}
+
+.paging /deep/ .ngx-pagination {
+  padding: 10px 10px 10px 10px;
+  align-self: center;
+  color: limegreen;
+}
+
+button {
+  background-color: #1ED760;
+  border: none;
+  color: black;
+  border-radius: 12px;
+  font-size: 25px !important;
+  outline: none !important;
+}
+
+.list {
+  min-height: 100%;
+  min-width: 100%;
+}
+
+ul {
+  list-style-type: none;
+  align-content: center;
+  cursor: default !important;
+  /*border: 5px solid limegreen;*/
+}
+
+li {
+  cursor: default !important;
+  color: #1ED760 !important;
+}
+
+.pagingControls {
+  justify-items: left;
+}
+
+.playlistTitle {
+  justify-content: center;
+}
+
+button[disabled] {
+  background-color: black;
+  color: #1ED760;
+}
+
+.pagers {
+  font-size: 15px !important;
+}
+
+select {
+  background: #1ED760;
+  color: black !important;
+  border: none;
+}
+
+optin:hover{
+  background-color: black !important;
+  color: #1ED760 !important;
+  border: none !important;
 }

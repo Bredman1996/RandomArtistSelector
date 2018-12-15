@@ -9,6 +9,6 @@ namespace RandomArtistSelector.Models
     {
         public string name { get; set; }
         public string href { get; set; }
-
+        public string spotifyUrl { get; set; }
     }
 }

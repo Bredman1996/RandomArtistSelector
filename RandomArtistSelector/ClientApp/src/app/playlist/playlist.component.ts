@@ -73,7 +73,7 @@ export class PlaylistComponent{
   }
 
   startPlaylist() {
-    this.spotifyService.startPlaylist("api/spotify/PlayPlaylist", sessionStorage.accessToken, this.selectedPlaylist.uri).then(async ()=> {
+    this.spotifyService.startPlaylist("api/spotify/PlayPlaylist", sessionStorage.accessToken, this.selectedPlaylist.uri).then(()=> {
       this.getCurrentlyPlaying();  
     });
   }
@@ -83,19 +83,19 @@ export class PlaylistComponent{
   }
 
   async playSong() {
-    await this.spotifyService.play("api/spotify/Play", sessionStorage.accessToken).then(async () => {
+    await this.spotifyService.play("api/spotify/Play", sessionStorage.accessToken).then( () => {
       this.getCurrentlyPlaying();  
     });
   }
 
   async goBack() {
-    await this.spotifyService.goBack("api/spotify/GoBack", sessionStorage.accessToken).then( async ()=> {
+    await this.spotifyService.goBack("api/spotify/GoBack", sessionStorage.accessToken).then( ()=> {
       this.getCurrentlyPlaying();  
     });
   }
 
   async skip() {
-    await this.spotifyService.skipSong("api/spotify/SkipSong", sessionStorage.accessToken).then(async () => {
+    await this.spotifyService.skipSong("api/spotify/SkipSong", sessionStorage.accessToken).then( () => {
       this.getCurrentlyPlaying();    
       });
   }
@@ -104,7 +104,10 @@ export class PlaylistComponent{
     setTimeout(() => {
       this.spotifyService.getCurrentlyPlaying("api/spotify/GetCurrentlyPlaying", sessionStorage.accessToken).subscribe(result => {
         this.currentlyPlayingInfo = result;
+        console.log(this.currentlyPlayingInfo.item.duration_ms);
+        clearInterval(this.timer);
+        this.timer = setInterval(() => { this.getCurrentlyPlaying() }, this.currentlyPlayingInfo.item.duration_ms);
       });
-    }, 700)
+    }, 700);
   }
 }

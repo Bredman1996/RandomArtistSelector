@@ -4,6 +4,7 @@ import { AccessTokenRequest } from '../Models/AccessTokenRequest';
 import { ActivatedRoute } from '@angular/router';
 import { PlaylistRequest } from '../Models/PlaylistRequest';
 import { GetTracksRequest } from '../Models/GetTracksRequest';
+import { setInterval, clearInterval } from 'timers';
 
 @Component({
   selector: 'playlist',
@@ -17,6 +18,7 @@ export class PlaylistComponent{
   public selectedPlaylist: any;
   public tracks: any;
   public currentlyPlayingInfo: any;
+  public timer: any;
 
   constructor(private spotifyService: SpotifyService, private route: ActivatedRoute, @Inject('BASE_URL') baseUrl: string) {
     if (!this.isAccessTokenInSession()) {
@@ -41,7 +43,7 @@ export class PlaylistComponent{
     this.selectedPlaylist = this.playlists[ranNum];
     let request = new GetTracksRequest();
     request.playlistName = this.selectedPlaylist.name;
-    request.playlistUrl = this.selectedPlaylist.href + "/tracks?offset=0&limit=25";
+    request.playlistUrl = this.selectedPlaylist.href + "/tracks?offset=0&limit=15";
     request.authToken = sessionStorage.accessToken;
     this.spotifyService.getTracks("api/spotify/GetTracks", request).subscribe(result => {
       this.tracks = result;
@@ -87,13 +89,35 @@ export class PlaylistComponent{
   }
 
   startPlaylist() {
-    this.spotifyService.getCurrentlyPlaying("api/spotify/GetCurrentlyPlaying", sessionStorage.accessToken).subscribe(result => {
+    this.spotifyService.startPlaylist("api/spotify/PlayPlaylist", sessionStorage.accessToken, this.selectedPlaylist.uri).subscribe();
+    this.timer = setInterval(() => {
+      this.spotifyService.getCurrentlyPlaying("api/spotify/GetCurrentlyPlaying", sessionStorage.accessToken).subscribe(result => {
+        this.currentlyPlayingInfo = result;
+      });
+    }, 1000);
+  }
+
+  pauseSong() {
+    this.spotifyService.pause("api/spotify/Pause", sessionStorage.accessToken).subscribe();
+    clearInterval(this.timer);
+  }
+
+  playSong() {
+    this.spotifyService.goBack("api/spotify/Play", sessionStorage.accessToken).subscribe();
+    this.timer = setInterval(() => {
+      this.spotifyService.getCurrentlyPlaying("api/spotify/GetCurrentlyPlaying", sessionStorage.accessToken).subscribe(result => {
+        this.currentlyPlayingInfo = result;
+      });
+    }, 1000);
+  }
+
+  skipSong() {
+    this.spotifyService.skipSong("api/spotify/SkipSong", sessionStorage.accessToken).subscribe(result => {
       this.currentlyPlayingInfo = result;
     });
   }
 
-  skipSong() {
-    this.spotifyService.skipSong("api/spotify/SkipSong", sessionStorage.accessToken).subscribe();
-    this.startPlaylist();
+  goBack() {
+    this.spotifyService.goBack("api/spotify/GoBack", sessionStorage.accessToken).subscribe();
   }
 }

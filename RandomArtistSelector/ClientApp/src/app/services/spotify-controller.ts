@@ -34,5 +34,21 @@ export class SpotifyService {
   skipSong(url: string, authToken: string) {
     return this.http.get(url + "?authToken=" + authToken);
   }
+
+  play(url: string, authToken: string) {
+    return this.http.get(url + "?authToken=" + authToken);
+  }
+
+  pause(url: string, authToken: string) {
+    return this.http.get(url + "?authToken=" + authToken);
+  }
+
+  goBack(url: string, authToken: string) {
+    return this.http.get(url + "?authToken=" + authToken);
+  }
+
+  startPlaylist(url: string, authToken: string, playlistUri: string) {
+    return this.http.get(url + "?authToken=" + authToken + "&uri=" + playlistUri);
+  }
 }
 

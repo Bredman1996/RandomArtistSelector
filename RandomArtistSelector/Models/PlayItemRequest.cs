@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace RandomArtistSelector.Models
 {
-    public class Playlist
+    public class PlayItemRequest
     {
-        public string name { get; set; }
-        public string href { get; set; }
-        public string uri { get; set; }
+        public string context_uri { get; set; }
     }
 }

@@ -2,15 +2,16 @@
   <h2>Now I can get your playlists and then choose one at random for you. </h2>
   <button (click)="getUsersPlaylists()">Get Playlists</button>
 </div>
-<div>
-<div *ngIf="playlists">
-  <h1>You have {{playlists.length}} playlists</h1>
-  <ul>
-    <li id="paginating" *ngFor="let playlist of playlists | paginate: { itemsPerPage: 10, currentPage: p }">{{playlist.name}}</li>
-  </ul>
-  <pagination-controls class="paging" (pageChange)="p = $event"></pagination-controls>
-  <button (click)="getRandomPlaylist()">Get Random Playlist</button>
-</div>
+<div class="row">
+  <div class="col-sm-5">
+  <div *ngIf="playlists">
+    <h1>You have {{playlists.length}} playlists</h1>
+    <ul>
+      <li id="paginating" *ngFor="let playlist of playlists | paginate: { itemsPerPage: 10, currentPage: p }">{{playlist.name}}</li>
+    </ul>
+    <pagination-controls class="paging" (pageChange)="p = $event"></pagination-controls>
+    <button (click)="getRandomPlaylist()">Get Random Playlist</button>
+  </div>
   <div *ngIf="selectedPlaylist">
     <h1>Your Random Playlist is: <button (click)="startPlaylist()">{{selectedPlaylist.name}}</button></h1>
     <div *ngIf="tracks">
@@ -26,8 +27,14 @@
       </div>
     </div>
   </div>
-  <div *ngIf="currentlyPlayingInfo">
+  </div>
+  <div *ngIf="currentlyPlayingInfo" class="col-sm-5">
     <h1 id="currentlyPlaying">You are currently listenting to: {{currentlyPlayingInfo.item.name}} by {{currentlyPlayingInfo.item.artists[0].name}}</h1>
-    <button (click)="skipSong()">Skip</button>
+  <div class="playerControls">
+    <button (click)="goBack()"><<</button>
+    <button class="button play" (click)="playSong()"></button>
+    <button class="button pause" (click)="pauseSong()"></button>
+    <button (click)="skipSong()">>></button>
   </div>
   </div>
+</div>

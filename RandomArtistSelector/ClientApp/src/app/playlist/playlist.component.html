@@ -30,11 +30,16 @@
   </div>
   <div *ngIf="currentlyPlayingInfo" class="col-sm-5">
     <h1 id="currentlyPlaying">You are currently listenting to: {{currentlyPlayingInfo.item.name}} by {{currentlyPlayingInfo.item.artists[0].name}}</h1>
-  <div class="playerControls">
-    <button (click)="goBack()"><<</button>
-    <button class="button play" (click)="playSong()"></button>
-    <button class="button pause" (click)="pauseSong()"></button>
-    <button (click)="skipSong()">>></button>
+  <div class="row playerControls">
+    <div class="col-sm-1">
+      <button (click)="goBack()"><<</button>
+      <button class="button play" (click)="playSong()"></button>
+      <button class="button pause" (click)="pauseSong()"></button>
+      <button (click)="skip()">>></button>
+    </div>
+    <div class="col-sm-2">
+      <img src={{currentlyPlayingInfo.item.album.images[1].url}} />
+    </div>
   </div>
   </div>
 </div>

@@ -126,6 +126,14 @@ optin:hover{
   border-radius: initial;
 }
 
+.button.skip {
+  background-color: transparent;
+  border-style: double;
+  border-color: transparent transparent transparent #1ED760 !important;
+  border-width: 37px 0px 37px 42px;
+  border-radius: initial;
+}
+
 .button.pause {
   background-color: transparent;
   width: 74px;

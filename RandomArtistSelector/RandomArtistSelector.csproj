@@ -32,6 +32,7 @@
     <None Remove="ClientApp\src\app\Models\StartPlayBackRequest.ts" />
     <None Remove="ClientApp\src\app\playlist\playlist.component.html" />
     <None Remove="ClientApp\src\app\playlist\playlist.component.ts" />
+    <None Remove="ClientApp\src\app\services\customer-http-service.ts" />
     <None Remove="ClientApp\src\app\services\spotify-controller.ts" />
     <None Remove="ClientApp\src\app\spotify\spotify-login.component.ts" />
   </ItemGroup>
@@ -43,6 +44,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\Models\PlaylistRequest.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\playlist\playlist.component.html" />
     <TypeScriptCompile Include="ClientApp\src\app\playlist\playlist.component.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\customer-http-service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\services\spotify-controller.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\spotify\spotify-login.component.ts" />
   </ItemGroup>

@@ -1,14 +1,15 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AccessTokenRequest } from '../Models/AccessTokenRequest'
 import { PlaylistRequest } from '../Models/PlaylistRequest';
 import { GetTracksRequest } from '../Models/GetTracksRequest';
+import { CustomHttpService } from './customer-http-service';
 
 @Injectable()
 export class SpotifyService {
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: CustomHttpService) { }
 
 
   getAccessToken(url: string, request: AccessTokenRequest) {
@@ -27,28 +28,28 @@ export class SpotifyService {
     return this.http.post(url, request);
   }
 
-  getCurrentlyPlaying(url: string, authToken: string) {
+ getCurrentlyPlaying(url: string, authToken: string) {
     return this.http.get(url + "?authToken=" + authToken);
   }
 
-  skipSong(url: string, authToken: string) {
+ skipSong(url: string, authToken: string): Promise<any> {
+    return this.http.awaitableGet(url + "?authToken=" + authToken);
+  }
+
+   play(url: string, authToken: string): Promise<any> {
+    return this.http.awaitableGet(url + "?authToken=" + authToken);
+  }
+
+   pause(url: string, authToken: string) {
     return this.http.get(url + "?authToken=" + authToken);
   }
 
-  play(url: string, authToken: string) {
-    return this.http.get(url + "?authToken=" + authToken);
+   goBack(url: string, authToken: string): Promise<any> {
+    return this.http.awaitableGet(url + "?authToken=" + authToken);
   }
 
-  pause(url: string, authToken: string) {
-    return this.http.get(url + "?authToken=" + authToken);
-  }
-
-  goBack(url: string, authToken: string) {
-    return this.http.get(url + "?authToken=" + authToken);
-  }
-
-  startPlaylist(url: string, authToken: string, playlistUri: string) {
-    return this.http.get(url + "?authToken=" + authToken + "&uri=" + playlistUri);
+  startPlaylist(url: string, authToken: string, playlistUri: string): Promise<any> {
+    return this.http.awaitableGet(url + "?authToken=" + authToken + "&uri=" + playlistUri);
   }
 }
 

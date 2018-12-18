@@ -20,15 +20,8 @@ export class PlaylistComponent{
   public currentlyPlayingInfo: any;
   public timer: any;
 
-  constructor(private spotifyService: SpotifyService, private route: ActivatedRoute, @Inject('BASE_URL') baseUrl: string) {
-    if (!this.isAccessTokenInSession()) {
-      if (this.isTokenPresent()) {
-        spotifyService.getAccessToken(baseUrl + "api/spotify/GetUserInfo", this.request).subscribe(result => {
-          sessionStorage.setItem('url', result["href"]);
-          sessionStorage.setItem('accessToken', result["authToken"]);
-        });
-      }
-    }
+  constructor(private spotifyService: SpotifyService, @Inject('BASE_URL') baseUrl: string) {
+
   }
 
   getUsersPlaylists() {
@@ -71,15 +64,6 @@ export class PlaylistComponent{
     })
   }
 
-
-  isTokenPresent() {
-    if (this.request.code === undefined) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   isAccessTokenInSession() {
     if (sessionStorage.accessToken) {
       return true;
@@ -89,35 +73,38 @@ export class PlaylistComponent{
   }
 
   startPlaylist() {
-    this.spotifyService.startPlaylist("api/spotify/PlayPlaylist", sessionStorage.accessToken, this.selectedPlaylist.uri).subscribe();
-    this.timer = setInterval(() => {
-      this.spotifyService.getCurrentlyPlaying("api/spotify/GetCurrentlyPlaying", sessionStorage.accessToken).subscribe(result => {
-        this.currentlyPlayingInfo = result;
-      });
-    }, 1000);
+    this.spotifyService.startPlaylist("api/spotify/PlayPlaylist", sessionStorage.accessToken, this.selectedPlaylist.uri).then(async ()=> {
+      this.getCurrentlyPlaying();  
+    });
   }
 
   pauseSong() {
     this.spotifyService.pause("api/spotify/Pause", sessionStorage.accessToken).subscribe();
-    clearInterval(this.timer);
   }
 
-  playSong() {
-    this.spotifyService.goBack("api/spotify/Play", sessionStorage.accessToken).subscribe();
-    this.timer = setInterval(() => {
-      this.spotifyService.getCurrentlyPlaying("api/spotify/GetCurrentlyPlaying", sessionStorage.accessToken).subscribe(result => {
-        this.currentlyPlayingInfo = result;
-      });
-    }, 1000);
-  }
-
-  skipSong() {
-    this.spotifyService.skipSong("api/spotify/SkipSong", sessionStorage.accessToken).subscribe(result => {
-      this.currentlyPlayingInfo = result;
+  async playSong() {
+    await this.spotifyService.play("api/spotify/Play", sessionStorage.accessToken).then(async () => {
+      this.getCurrentlyPlaying();  
     });
   }
 
-  goBack() {
-    this.spotifyService.goBack("api/spotify/GoBack", sessionStorage.accessToken).subscribe();
+  async goBack() {
+    await this.spotifyService.goBack("api/spotify/GoBack", sessionStorage.accessToken).then( async ()=> {
+      this.getCurrentlyPlaying();  
+    });
+  }
+
+  async skip() {
+    await this.spotifyService.skipSong("api/spotify/SkipSong", sessionStorage.accessToken).then(async () => {
+      this.getCurrentlyPlaying();    
+      });
+  }
+
+  getCurrentlyPlaying() {
+    setTimeout(() => {
+      this.spotifyService.getCurrentlyPlaying("api/spotify/GetCurrentlyPlaying", sessionStorage.accessToken).subscribe(result => {
+        this.currentlyPlayingInfo = result;
+      });
+    }, 700)
   }
 }

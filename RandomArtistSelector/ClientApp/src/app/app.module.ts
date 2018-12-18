@@ -11,6 +11,7 @@ import { SpotifyLoginComponent } from './spotify/spotify-login.component';
 import { SpotifyService } from './services/spotify-controller';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { PlaylistComponent } from './playlist/playlist.component';
+import { CustomHttpService } from './services/customer-http-service';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { PlaylistComponent } from './playlist/playlist.component';
       { path: 'playlist', component: PlaylistComponent }
     ])
   ],
-  providers: [SpotifyService],
+  providers: [SpotifyService, CustomHttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

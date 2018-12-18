@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -53,7 +54,7 @@ namespace RandomArtistSelector.Controllers
                     {
                         name = item["name"].ToString(),
                         href = item["href"].ToString(),
-                        spotifyUrl = item["external_urls"]["spotify"].ToString(),
+                        uri = item["uri"].ToString(),
                     };
                     playlists.Add(playlist);
                 }
@@ -91,6 +92,62 @@ namespace RandomArtistSelector.Controllers
             tracksResponse.previousUrl = spotifyResponse["previous"].ToString();
             tracksResponse.Tracks = tracks;
             return JsonConvert.SerializeObject(tracksResponse);
+        }
+
+        [HttpGet("[action]")]
+        public string GetCurrentlyPlaying([FromQuery] string authToken)
+        {
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {authToken}");
+            string response = web.DownloadString("https://api.spotify.com/v1/me/player/currently-playing");
+            return response;
+        }
+
+        [HttpGet("[action]")]
+        public void Play([FromQuery] string authToken)
+        {
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {authToken}");
+            byte[] data = new byte[0];
+            web.UploadData("https://api.spotify.com/v1/me/player/play", "PUT", data);
+        }
+
+        [HttpGet("[action]")]
+        public void PlayPlaylist([FromQuery] string authToken, string uri)
+        {
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {authToken}");
+            PlayItemRequest playMe = new PlayItemRequest
+            {
+                context_uri = uri,
+            };
+            string body = JsonConvert.SerializeObject(playMe);
+
+            web.UploadString("https://api.spotify.com/v1/me/player/play", "PUT", body);
+        }
+
+        [HttpGet("[action]")]
+        public void Pause([FromQuery] string authToken)
+        {
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {authToken}");
+            web.UploadString("https://api.spotify.com/v1/me/player/pause", "PUT", "");
+        }
+
+        [HttpGet("[action]")]
+        public void SkipSong([FromQuery] string authToken)
+        {
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {authToken}");
+            string response = web.UploadString("https://api.spotify.com/v1/me/player/next", "");
+        }
+
+        [HttpGet("[action]")]
+        public void GoBack([FromQuery] string authToken)
+        {
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {authToken}");
+            string response = web.UploadString("https://api.spotify.com/v1/me/player/previous", "");
         }
     }
 }

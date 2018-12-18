@@ -66,7 +66,7 @@ p {
 button {
   background-color: #1ED760;
   border: none;
-  color: black;
+  color: black !important;
   border-radius: 12px;
   font-size: 25px !important;
   outline: none !important;
@@ -99,7 +99,7 @@ li {
 
 button[disabled] {
   background-color: black;
-  color: #1ED760;
+  color: #1ED760 !important;
 }
 
 .pagers {
@@ -116,4 +116,27 @@ optin:hover{
   background-color: black !important;
   color: #1ED760 !important;
   border: none !important;
+}
+
+.button.play {
+  background-color: transparent;
+  border-style: solid;
+  border-color: transparent transparent transparent #1ED760 !important;
+  border-width: 37px 0px 37px 42px;
+  border-radius: initial;
+}
+
+.button.pause {
+  background-color: transparent;
+  width: 74px;
+  height: 74px;
+  border-style: double;
+  border-width: 0px 0px 0px 37px;
+  border-color: #1ED760;
+  border-radius: initial;
+}
+
+.playerControls{
+  height: 75px;
+  justify-content: center;
 }

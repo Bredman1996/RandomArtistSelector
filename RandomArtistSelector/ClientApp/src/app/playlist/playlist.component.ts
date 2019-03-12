@@ -100,8 +100,8 @@ export class PlaylistComponent implements OnInit {
   }
 
   startPlaylist() {
-    this.spotifyService.startPlaylist("api/spotify/PlayPlaylist", sessionStorage.accessToken, this.selectedPlaylist.uri).then(async () => {
-      this.getCurrentlyPlaying();
+    this.spotifyService.startPlaylist("api/spotify/PlayPlaylist", sessionStorage.accessToken, this.selectedPlaylist.uri).then(()=> {
+      this.getCurrentlyPlaying();  
     });
   }
 
@@ -110,28 +110,31 @@ export class PlaylistComponent implements OnInit {
   }
 
   async playSong() {
-    await this.spotifyService.play("api/spotify/Play", sessionStorage.accessToken).then(async () => {
-      this.getCurrentlyPlaying();
+    await this.spotifyService.play("api/spotify/Play", sessionStorage.accessToken).then( () => {
+      this.getCurrentlyPlaying();  
     });
   }
 
   async goBack() {
-    await this.spotifyService.goBack("api/spotify/GoBack", sessionStorage.accessToken).then(async () => {
-      this.getCurrentlyPlaying();
+    await this.spotifyService.goBack("api/spotify/GoBack", sessionStorage.accessToken).then( ()=> {
+      this.getCurrentlyPlaying();  
     });
   }
 
   async skip() {
-    await this.spotifyService.skipSong("api/spotify/SkipSong", sessionStorage.accessToken).then(async () => {
-      this.getCurrentlyPlaying();
-    });
+    await this.spotifyService.skipSong("api/spotify/SkipSong", sessionStorage.accessToken).then( () => {
+      this.getCurrentlyPlaying();    
+      });
   }
 
   getCurrentlyPlaying() {
     setTimeout(() => {
       this.spotifyService.getCurrentlyPlaying("api/spotify/GetCurrentlyPlaying", sessionStorage.accessToken).subscribe(result => {
         this.currentlyPlayingInfo = result;
+        console.log(this.currentlyPlayingInfo.item.duration_ms);
+        clearInterval(this.timer);
+        this.timer = setInterval(() => { this.getCurrentlyPlaying() }, this.currentlyPlayingInfo.item.duration_ms);
       });
-    }, 700)
+    }, 700);
   }
 }

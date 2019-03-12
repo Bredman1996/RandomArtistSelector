@@ -38,7 +38,7 @@ namespace RandomArtistSelector.Controllers
         }
 
         [HttpPost("[action]")]
-        public string GetUsersPlaylists([FromBody] PlaylistRequest request)
+        public string GetAllUserPlaylists([FromBody] PlaylistRequest request)
         {
             List<Playlist> playlists = new List<Playlist>();
             int offset = 0;
@@ -69,6 +69,34 @@ namespace RandomArtistSelector.Controllers
                 }
             }
             string result = JsonConvert.SerializeObject(playlists);
+            return result;
+        }
+
+        [HttpPost("[action]")]
+        public string GetPagedUserPlaylists([FromBody] PagedPlaylistRequest request)
+        {
+            PlaylistResponse playlistResponse = new PlaylistResponse();
+            List<Playlist> playlists = new List<Playlist>();
+            WebClient web = new WebClient();
+            web.Headers.Set("Authorization", $"Bearer {request.accessToken}");
+            JObject response = JObject.Parse(web.DownloadString(request.getUrl));
+            JArray items = response["items"].ToObject<JArray>();
+            foreach (JObject item in items)
+            {
+                Playlist playlist = new Playlist
+                {
+                    name = item["name"].ToString(),
+                    href = item["href"].ToString(),
+                    uri = item["uri"].ToString(),
+                };
+                playlists.Add(playlist);
+            }
+            playlistResponse.playlists = playlists;
+            playlistResponse.previousUrl = response["previous"].ToString();
+            playlistResponse.nextUrl = response["next"].ToString();
+            playlistResponse.total = response["total"].ToString();
+            playlistResponse.limit = response["limit"].ToString();
+            string result = JsonConvert.SerializeObject(playlistResponse);
             return result;
         }
 

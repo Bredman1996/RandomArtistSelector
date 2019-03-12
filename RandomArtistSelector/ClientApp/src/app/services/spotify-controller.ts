@@ -4,6 +4,7 @@ import { AccessTokenRequest } from '../Models/AccessTokenRequest'
 import { PlaylistRequest } from '../Models/PlaylistRequest';
 import { GetTracksRequest } from '../Models/GetTracksRequest';
 import { CustomHttpService } from './customer-http-service';
+import { PagedPlaylistRequest } from '../Models/PagedPlaylistRequest';
 
 @Injectable()
 export class SpotifyService {
@@ -20,7 +21,11 @@ export class SpotifyService {
     return this.http.get(url + "?authToken=" + authToken);
   }
 
-  getUsersPlaylists(url: string, request: PlaylistRequest) {
+  getAllUserPlaylists(url: string, request: PlaylistRequest) {
+    return this.http.post(url, request);
+  }
+
+  getPagedUserPlaylists(url: string, request: PagedPlaylistRequest) {
     return this.http.post(url, request);
   }
 

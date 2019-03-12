@@ -112,7 +112,7 @@ select {
   border: none;
 }
 
-optin:hover{
+option:hover{
   background-color: black !important;
   color: #1ED760 !important;
   border: none !important;
@@ -142,6 +142,19 @@ optin:hover{
   border-width: 0px 0px 0px 37px;
   border-color: #1ED760;
   border-radius: initial;
+}
+
+button:hover {
+  background: black;
+  color: #1ED760!important;
+  border: 1px solid #1ED760;
+  border-radius: 12px;
+}
+li:hover {
+  background: #1ED760 !important;
+  border-radius: 12px;
+  border: none;
+  color: black !important;
 }
 
 .playerControls{

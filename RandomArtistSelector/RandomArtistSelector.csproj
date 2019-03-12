@@ -28,6 +28,7 @@
   <ItemGroup>
     <None Remove="ClientApp\src\app\file.ts" />
     <None Remove="ClientApp\src\app\Models\GetTracksRequest.ts" />
+    <None Remove="ClientApp\src\app\Models\PagedPlaylistRequest.ts" />
     <None Remove="ClientApp\src\app\Models\PlaylistRequest.ts" />
     <None Remove="ClientApp\src\app\Models\StartPlayBackRequest.ts" />
     <None Remove="ClientApp\src\app\playlist\playlist.component.html" />
@@ -39,6 +40,7 @@
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\Models\AccessTokenRequest.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\Models\PagedPlaylistRequest.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\Models\StartPlayBackRequest.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\Models\GetTracksRequest.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\Models\PlaylistRequest.ts" />

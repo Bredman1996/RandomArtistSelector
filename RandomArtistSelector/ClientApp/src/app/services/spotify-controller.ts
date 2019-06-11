@@ -1,10 +1,11 @@
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AccessTokenRequest } from '../Models/AccessTokenRequest'
 import { PlaylistRequest } from '../Models/PlaylistRequest';
 import { GetTracksRequest } from '../Models/GetTracksRequest';
 import { CustomHttpService } from './customer-http-service';
 import { PagedPlaylistRequest } from '../Models/PagedPlaylistRequest';
+import { Track } from '../Models/Track';
+import { GetTracksResponse } from '../Models/GetTracksResponse';
 
 @Injectable()
 export class SpotifyService {
@@ -29,8 +30,18 @@ export class SpotifyService {
     return this.http.post(url, request);
   }
 
-  getTracks(url: string, request: GetTracksRequest) {
-    return this.http.post(url, request);
+  getTracks(url: string, request: GetTracksRequest): GetTracksResponse{
+    let response: GetTracksResponse = new GetTracksResponse;
+    this.http.post(url, request).toPromise().then(result => {
+      let tracks: Track[] = [];
+      result["Tracks"].forEach(element => {
+        tracks.push({ArtistName: element["ArtistName"], TrackName: element["TrackName"]});
+      });
+      response.Tracks = tracks;
+      response.PreviousTrackUrl = result["previousUrl"];
+      response.NextTrackUrl = result["nextUrl"];
+    });
+    return response;
   }
 
  getCurrentlyPlaying(url: string, authToken: string) {

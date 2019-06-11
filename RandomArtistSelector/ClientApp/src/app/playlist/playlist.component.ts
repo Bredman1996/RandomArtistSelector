@@ -4,6 +4,10 @@ import { AccessTokenRequest } from '../Models/AccessTokenRequest';
 import { PlaylistRequest } from '../Models/PlaylistRequest';
 import { GetTracksRequest } from '../Models/GetTracksRequest';
 import { PagedPlaylistRequest } from '../Models/PagedPlaylistRequest';
+import { StorageService } from '../services/storage.service';
+import { Playlist } from '../Models/Playlist';
+import { forEach } from '@angular/router/src/utils/collection';
+import { Track } from '../Models/Track';
 
 @Component({
   selector: 'playlist',
@@ -14,60 +18,63 @@ import { PagedPlaylistRequest } from '../Models/PagedPlaylistRequest';
 export class PlaylistComponent implements OnInit {
   public request = new AccessTokenRequest("authorization_code", "", "https://localhost:44315/spotify", "71562cadc5b6485c8688378f5979bf5b", "14e2707243e44d8e8eb6b93c985c5ab9");
   public allPlaylists: any;
-  public selectedPlaylist: any;
+  public selectedPlaylist: Playlist;
   public tracks: any;
-  public currentlyPlayingInfo: any;
-  public timer: any;
+
   public pagedPlaylists: any;
   public pagedPlaylistsLength: any;
   public isInited: boolean = false;
 
-  constructor(private spotifyService: SpotifyService, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private readonly storageService: StorageService
+     ,private readonly spotifyService: SpotifyService, 
+     @Inject('BASE_URL') baseUrl: string) {
 
   }
 
   ngOnInit() {
+    this.selectedPlaylist = new Playlist();
     this.getPagedUserPlaylists();
-    this.getCurrentlyPlaying();
     this.isInited = true;
   }
 
   getAllUserPlaylists() {
-    let request = new PlaylistRequest(sessionStorage.accessToken, sessionStorage.url);
+    let request = new PlaylistRequest(this.storageService.authToken, this.storageService.userUrl);
     this.spotifyService.getAllUserPlaylists("api/spotify/GetAllUserPlaylists", request).subscribe(result => {
       this.allPlaylists = result;
     });
   }
 
-  getPagedUserPlaylists(getUrl: string = sessionStorage.url + "/playlists") {
-    let request = new PagedPlaylistRequest(sessionStorage.accessToken, sessionStorage.url, getUrl);
+  getPagedUserPlaylists(getUrl: string = this.storageService.userUrl + "/playlists") {
+    let request = new PagedPlaylistRequest(this.storageService.authToken, this.storageService.userUrl, getUrl);
     this.spotifyService.getPagedUserPlaylists("api/spotify/GetPagedUserPlaylists", request).subscribe(result => {
       this.pagedPlaylists = result;
     });
   }
 
   getRandomPlaylist() {
-    let request = new PlaylistRequest(sessionStorage.accessToken, sessionStorage.url);
+    let request = new PlaylistRequest(this.storageService.authToken, this.storageService.userUrl);
     this.spotifyService.getAllUserPlaylists("api/spotify/GetAllUserPlaylists", request).subscribe(result => {
       this.allPlaylists = result;
       var ranNum = Math.floor(Math.random() * this.allPlaylists.length);
-      this.selectedPlaylist = this.allPlaylists[ranNum];
+      let playlist = this.allPlaylists[ranNum];
+      this.selectedPlaylist.Href = playlist["href"];
+      this.selectedPlaylist.Name = playlist["name"];
       let request = new GetTracksRequest();
-      request.playlistName = this.selectedPlaylist.name;
-      request.playlistUrl = this.selectedPlaylist.href + "/tracks?offset=0&limit=15";
-      request.authToken = sessionStorage.accessToken;
-      this.spotifyService.getTracks("api/spotify/GetTracks", request).subscribe(result => {
-        this.tracks = result;
+      request.playlistName = this.selectedPlaylist.Name;
+      request.playlistUrl = this.selectedPlaylist.Href + "/tracks?offset=0&limit=15";
+      request.authToken = this.storageService.authToken;
+      var tracksResponse = this.spotifyService.getTracks("api/spotify/GetTracks", request);
+      this.selectedPlaylist.Tracks = tracksResponse.Tracks;
+      this.selectedPlaylist.NextTrackUrl = tracksResponse.NextTrackUrl;
+      this.selectedPlaylist.PreviousTrackUrl = tracksResponse.PreviousTrackUrl;
       });
-    });
-
   }
 
   getNextTracks() {
     let request = new GetTracksRequest();
-    request.playlistName = this.selectedPlaylist.name;
-    request.playlistUrl = this.tracks.nextUrl;
-    request.authToken = sessionStorage.accessToken;
+    request.playlistName = this.selectedPlaylist.Name;
+    request.playlistUrl = this.selectedPlaylist.NextTrackUrl;
+    request.authToken = this.storageService.authToken;
     this.spotifyService.getTracks("api/spotify/getTracks", request).subscribe(result => {
       this.tracks = result;
     })
@@ -77,7 +84,7 @@ export class PlaylistComponent implements OnInit {
     let request = new GetTracksRequest();
     request.playlistName = this.selectedPlaylist.name;
     request.playlistUrl = this.tracks.previousUrl;
-    request.authToken = sessionStorage.accessToken;
+    request.authToken = this.storageService.authToken;
     this.spotifyService.getTracks("api/spotify/getTracks", request).subscribe(result => {
       this.tracks = result;
     })
@@ -91,50 +98,16 @@ export class PlaylistComponent implements OnInit {
     this.getPagedUserPlaylists(this.pagedPlaylists.previousUrl);
   }
 
+  startPlaylist() {
+    
+  }
+
+
   isAccessTokenInSession() {
-    if (sessionStorage.accessToken) {
+    if (this.storageService.authToken) {
       return true;
     } else {
       return false;
     }
-  }
-
-  startPlaylist() {
-    this.spotifyService.startPlaylist("api/spotify/PlayPlaylist", sessionStorage.accessToken, this.selectedPlaylist.uri).then(()=> {
-      this.getCurrentlyPlaying();  
-    });
-  }
-
-  pauseSong() {
-    this.spotifyService.pause("api/spotify/Pause", sessionStorage.accessToken).subscribe();
-  }
-
-  async playSong() {
-    await this.spotifyService.play("api/spotify/Play", sessionStorage.accessToken).then( () => {
-      this.getCurrentlyPlaying();  
-    });
-  }
-
-  async goBack() {
-    await this.spotifyService.goBack("api/spotify/GoBack", sessionStorage.accessToken).then( ()=> {
-      this.getCurrentlyPlaying();  
-    });
-  }
-
-  async skip() {
-    await this.spotifyService.skipSong("api/spotify/SkipSong", sessionStorage.accessToken).then( () => {
-      this.getCurrentlyPlaying();    
-      });
-  }
-
-  getCurrentlyPlaying() {
-    setTimeout(() => {
-      this.spotifyService.getCurrentlyPlaying("api/spotify/GetCurrentlyPlaying", sessionStorage.accessToken).subscribe(result => {
-        this.currentlyPlayingInfo = result;
-        console.log(this.currentlyPlayingInfo.item.duration_ms);
-        clearInterval(this.timer);
-        this.timer = setInterval(() => { this.getCurrentlyPlaying() }, this.currentlyPlayingInfo.item.duration_ms);
-      });
-    }, 700);
   }
 }

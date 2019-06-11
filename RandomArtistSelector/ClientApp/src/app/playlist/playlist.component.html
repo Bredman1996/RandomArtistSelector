@@ -12,31 +12,19 @@
         </div>
         <button (click)="getRandomPlaylist()">Get Random Playlist</button>
       </div>
-      <div *ngIf="selectedPlaylist">
-        <h1>Your Random Playlist is: {{selectedPlaylist.name}} <button (click)="startPlaylist()">Play it</button></h1>
-        <div *ngIf="tracks">
+      <div *ngIf="!!selectedPlaylist.Name">
+        <h1>Your Random Playlist is: {{selectedPlaylist.Name}} <button (click)="startPlaylist()">Play it</button></h1>
+        <div *ngIf="!!selectedPlaylist.Tracks">
           <h2>Here are the tracks of your playlist</h2>
           <ul>
-            <li *ngFor="let track of tracks.Tracks">{{track.TrackName}} - By: {{track.ArtistName}}</li>
+            <li *ngFor="let track of selectedPlaylist.Tracks">{{track.TrackName}} - By: {{track.ArtistName}}</li>
           </ul>
-          <div *ngIf="tracks.previousUrl || tracks.nextUrl">
+          <div *ngIf="selectedPlaylist.PreviousTrackUrl || selectedPlaylist.NextTrackUrl">
             <div class="pagingControls">
-              <button class="pagers" [disabled]="!tracks.previousUrl" (click)="getPreviousTracks()">Get Previous Set of tracks</button>
-              <button class="pagers" [disabled]="!tracks.nextUrl" (click)="getNextTracks()">Get Next Set of tracks</button>
+              <button class="pagers" [disabled]="!selectedPlaylist.PreviousTrackUrl" (click)="getPreviousTracks()">Get Previous Set of tracks</button>
+              <button class="pagers" [disabled]="!selectedPlaylist.NextTrackUrl" (click)="getNextTracks()">Get Next Set of tracks</button>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <div *ngIf="currentlyPlayingInfo" class="col-sm-5">
-      <h1 id="currentlyPlaying">You are currently listenting to: {{currentlyPlayingInfo.item.name}} by {{currentlyPlayingInfo.item.artists[0].name}}</h1>
-        <img src={{currentlyPlayingInfo.item.album.images[1].url}} />
-      <div class="row playerControls">
-        <div class="col-1">
-          <button (click)="goBack()"><<</button>
-          <button class="button play" (click)="playSong()"></button>
-          <button class="button pause" (click)="pauseSong()"></button>
-          <button (click)="skip()">>></button>
         </div>
       </div>
     </div>

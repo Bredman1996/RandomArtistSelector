@@ -30,18 +30,8 @@ export class SpotifyService {
     return this.http.post(url, request);
   }
 
-  getTracks(url: string, request: GetTracksRequest): GetTracksResponse{
-    let response: GetTracksResponse = new GetTracksResponse;
-    this.http.post(url, request).toPromise().then(result => {
-      let tracks: Track[] = [];
-      result["Tracks"].forEach(element => {
-        tracks.push({ArtistName: element["ArtistName"], TrackName: element["TrackName"]});
-      });
-      response.Tracks = tracks;
-      response.PreviousTrackUrl = result["previousUrl"];
-      response.NextTrackUrl = result["nextUrl"];
-    });
-    return response;
+  getTracks(url: string, request: GetTracksRequest){
+    return this.http.post(url, request);
   }
 
  getCurrentlyPlaying(url: string, authToken: string) {

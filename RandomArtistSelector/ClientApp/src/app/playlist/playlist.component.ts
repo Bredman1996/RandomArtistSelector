@@ -2,12 +2,10 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { SpotifyService } from '../services/spotify-controller';
 import { AccessTokenRequest } from '../Models/AccessTokenRequest';
 import { PlaylistRequest } from '../Models/PlaylistRequest';
-import { GetTracksRequest } from '../Models/GetTracksRequest';
 import { PagedPlaylistRequest } from '../Models/PagedPlaylistRequest';
 import { StorageService } from '../services/storage.service';
 import { Playlist } from '../Models/Playlist';
-import { forEach } from '@angular/router/src/utils/collection';
-import { Track } from '../Models/Track';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'playlist',
@@ -27,12 +25,13 @@ export class PlaylistComponent implements OnInit {
 
   constructor(private readonly storageService: StorageService
      ,private readonly spotifyService: SpotifyService, 
-     @Inject('BASE_URL') baseUrl: string) {
+     @Inject('BASE_URL') baseUrl: string,
+     private readonly router: Router) {
 
   }
 
   ngOnInit() {
-    this.selectedPlaylist = new Playlist();
+    this.selectedPlaylist = this.storageService.selectedPlaylist || new Playlist();
     this.getPagedUserPlaylists();
     this.isInited = true;
   }
@@ -59,35 +58,8 @@ export class PlaylistComponent implements OnInit {
       let playlist = this.allPlaylists[ranNum];
       this.selectedPlaylist.Href = playlist["href"];
       this.selectedPlaylist.Name = playlist["name"];
-      let request = new GetTracksRequest();
-      request.playlistName = this.selectedPlaylist.Name;
-      request.playlistUrl = this.selectedPlaylist.Href + "/tracks?offset=0&limit=15";
-      request.authToken = this.storageService.authToken;
-      var tracksResponse = this.spotifyService.getTracks("api/spotify/GetTracks", request);
-      this.selectedPlaylist.Tracks = tracksResponse.Tracks;
-      this.selectedPlaylist.NextTrackUrl = tracksResponse.NextTrackUrl;
-      this.selectedPlaylist.PreviousTrackUrl = tracksResponse.PreviousTrackUrl;
+      this.selectedPlaylist.Uri = playlist["uri"];
       });
-  }
-
-  getNextTracks() {
-    let request = new GetTracksRequest();
-    request.playlistName = this.selectedPlaylist.Name;
-    request.playlistUrl = this.selectedPlaylist.NextTrackUrl;
-    request.authToken = this.storageService.authToken;
-    this.spotifyService.getTracks("api/spotify/getTracks", request).subscribe(result => {
-      this.tracks = result;
-    })
-  }
-
-  getPreviousTracks() {
-    let request = new GetTracksRequest();
-    request.playlistName = this.selectedPlaylist.name;
-    request.playlistUrl = this.tracks.previousUrl;
-    request.authToken = this.storageService.authToken;
-    this.spotifyService.getTracks("api/spotify/getTracks", request).subscribe(result => {
-      this.tracks = result;
-    })
   }
 
   getNextPlaylists() {
@@ -99,10 +71,10 @@ export class PlaylistComponent implements OnInit {
   }
 
   startPlaylist() {
-    
+    this.storageService.selectedPlaylist = this.selectedPlaylist;
+    this.router.navigate(['/player']);
   }
-
-
+  
   isAccessTokenInSession() {
     if (this.storageService.authToken) {
       return true;

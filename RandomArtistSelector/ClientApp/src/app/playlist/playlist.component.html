@@ -7,25 +7,13 @@
           <li *ngFor="let playlist of pagedPlaylists.playlists">{{playlist.name}} </li>
         </ul>
         <div class="pagingControls">
-          <button class="pagers" [disabled]="!pagedPlaylists.previousUrl" (click)="getPreviousPlaylists()">Get previousSet of playlists</button>
+          <button class="pagers" [disabled]="!pagedPlaylists.previousUrl" (click)="getPreviousPlaylists()">Get Previous Set of playlists</button>
           <button class="pagers" [disabled]="!pagedPlaylists.nextUrl" (click)="getNextPlaylists()">Get Next Set of playlists</button>
         </div>
         <button (click)="getRandomPlaylist()">Get Random Playlist</button>
       </div>
       <div *ngIf="!!selectedPlaylist.Name">
         <h1>Your Random Playlist is: {{selectedPlaylist.Name}} <button (click)="startPlaylist()">Play it</button></h1>
-        <div *ngIf="!!selectedPlaylist.Tracks">
-          <h2>Here are the tracks of your playlist</h2>
-          <ul>
-            <li *ngFor="let track of selectedPlaylist.Tracks">{{track.TrackName}} - By: {{track.ArtistName}}</li>
-          </ul>
-          <div *ngIf="selectedPlaylist.PreviousTrackUrl || selectedPlaylist.NextTrackUrl">
-            <div class="pagingControls">
-              <button class="pagers" [disabled]="!selectedPlaylist.PreviousTrackUrl" (click)="getPreviousTracks()">Get Previous Set of tracks</button>
-              <button class="pagers" [disabled]="!selectedPlaylist.NextTrackUrl" (click)="getNextTracks()">Get Next Set of tracks</button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

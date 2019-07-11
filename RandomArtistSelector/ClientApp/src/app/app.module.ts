@@ -13,6 +13,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { CustomHttpService } from './services/customer-http-service';
 import { StorageService } from './services/storage.service';
+import { PlayerComponent } from './player/player.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { StorageService } from './services/storage.service';
     NavMenuComponent,
     FetchDataComponent,
     SpotifyLoginComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    PlayerComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -30,7 +32,8 @@ import { StorageService } from './services/storage.service';
     RouterModule.forRoot([
       { path: '', component: FetchDataComponent },
       { path: 'spotify', component: SpotifyLoginComponent },
-      { path: 'playlist', component: PlaylistComponent }
+      { path: 'playlist', component: PlaylistComponent },
+      { path: 'player', component: PlayerComponent }
     ])
   ],
   providers: [SpotifyService, CustomHttpService, StorageService], 

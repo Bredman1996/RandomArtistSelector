@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Playlist } from "../Models/Playlist";
 
 @Injectable()
 
@@ -15,15 +16,6 @@ import { Injectable } from "@angular/core";
 
     private saveStorage(){
         localStorage.setItem('randomArtistSession', JSON.stringify(this.storageObject));
-    }
-
-    public get selectedPlaylistUri(){
-        return this.storageObject.selectedPlaylistUri;
-    }
-
-    public set selectedPlaylistUri(selectedPlaylistUri: string){
-        this.storageObject.selectedPlaylistUri = selectedPlaylistUri;
-        this.saveStorage();
     }
 
     public get userUrl(){
@@ -43,10 +35,19 @@ import { Injectable } from "@angular/core";
         this.storageObject.authToken = authToken;
         this.saveStorage();
     }
+
+    public get selectedPlaylist(){
+        return this.storageObject.selectedPlaylist;
+    }
+
+    public set selectedPlaylist(playlist: Playlist){
+        this.storageObject.selectedPlaylist = playlist;
+        this.saveStorage();
+    }
   }
 
   class StorageObject{
-      selectedPlaylist: string = "";
-      userUrl: string = "";
-      authToken: string = "";
+    selectedPlaylist: Playlist;
+    userUrl: string = "";
+    authToken: string = "";
   }
